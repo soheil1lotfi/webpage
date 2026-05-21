@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, useNavigate, useParams } from 'react-router-dom'
 import './index.css';
 import projects from './projects.json';
@@ -39,11 +39,7 @@ function HomePage() {
   const [slideDirection, setSlideDirection] = useState('left');
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const tabOrder = ['all', 'web', 'ai', 'ux'];
-  
-  // Smooth scroll state
-  const scrollRef = useRef({ current: 0, target: 0 });
-  const rafRef = useRef(null);
-  
+
   // Detect touch device
   useEffect(() => {
     const checkTouchDevice = () => {
@@ -62,101 +58,8 @@ function HomePage() {
     return () => window.removeEventListener('resize', checkTouchDevice);
   }, []);
   
-  // Optimized smooth scroll - stops when idle
-  useEffect(() => {
-    if (isTouchDevice) return;
-    
-    const ease = 0.08;
-    let isAnimating = false;
-    
-    const handleWheel = (e) => {
-      e.preventDefault();
-      scrollRef.current.target += e.deltaY;
-      
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      scrollRef.current.target = Math.max(0, Math.min(scrollRef.current.target, maxScroll));
-      
-      // Start animation if not already running
-      if (!isAnimating) {
-        isAnimating = true;
-        rafRef.current = requestAnimationFrame(smoothScroll);
-      }
-    };
-    
-    const smoothScroll = () => {
-      const diff = scrollRef.current.target - scrollRef.current.current;
-      
-      // Stop animating if difference is negligible (< 0.5px)
-      if (Math.abs(diff) > 0.5) {
-        scrollRef.current.current += diff * ease;
-        window.scrollTo(0, scrollRef.current.current);
-        rafRef.current = requestAnimationFrame(smoothScroll);
-      } else {
-        // Snap to target and stop
-        scrollRef.current.current = scrollRef.current.target;
-        window.scrollTo(0, scrollRef.current.current);
-        isAnimating = false;
-        rafRef.current = null;
-      }
-    };
-    
-    // Initialize scroll position
-    scrollRef.current.current = window.scrollY;
-    scrollRef.current.target = window.scrollY;
-    
-    const handleKeyDown = (e) => {
-      const scrollAmount = 100;
-      let shouldScroll = false;
-      
-      if (e.key === 'ArrowDown' || e.key === 'PageDown') {
-        e.preventDefault();
-        scrollRef.current.target += e.key === 'PageDown' ? window.innerHeight : scrollAmount;
-        shouldScroll = true;
-      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-        e.preventDefault();
-        scrollRef.current.target -= e.key === 'PageUp' ? window.innerHeight : scrollAmount;
-        shouldScroll = true;
-      } else if (e.key === 'Home') {
-        e.preventDefault();
-        scrollRef.current.target = 0;
-        shouldScroll = true;
-      } else if (e.key === 'End') {
-        e.preventDefault();
-        scrollRef.current.target = document.documentElement.scrollHeight - window.innerHeight;
-        shouldScroll = true;
-      }
-      
-      if (shouldScroll) {
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        scrollRef.current.target = Math.max(0, Math.min(scrollRef.current.target, maxScroll));
-        
-        // Start animation if not already running
-        if (!isAnimating) {
-          isAnimating = true;
-          rafRef.current = requestAnimationFrame(smoothScroll);
-        }
-      }
-    };
-    
-    const handleResize = () => {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      scrollRef.current.target = Math.min(scrollRef.current.target, maxScroll);
-    };
-    
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('resize', handleResize);
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-    };
-  }, [isTouchDevice]);
-  
+
+
   useEffect(() => {
     if (isTouchDevice) return;
     
@@ -446,16 +349,10 @@ function ProjectDetailPageWrapper() {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [tooltipData, setTooltipData] = useState({ logo: '', url: '' });
   
-  // Smooth scroll state
-  const scrollRef = useRef({ current: 0, target: 0 });
-  const rafRef = useRef(null);
-  
   const project = projects.find(p => p.id === parseInt(projectId));
-  
-  // Reset scroll to top when component mounts
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    scrollRef.current = { current: 0, target: 0 };
   }, [projectId]);
   
   // Detect touch device
@@ -476,100 +373,6 @@ function ProjectDetailPageWrapper() {
     return () => window.removeEventListener('resize', checkTouchDevice);
   }, []);
 
-  // Optimized smooth scroll - stops when idle
-  useEffect(() => {
-    if (isTouchDevice) return;
-    
-    const ease = 0.08;
-    let isAnimating = false;
-    
-    const handleWheel = (e) => {
-      e.preventDefault();
-      scrollRef.current.target += e.deltaY;
-      
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      scrollRef.current.target = Math.max(0, Math.min(scrollRef.current.target, maxScroll));
-      
-      // Start animation if not already running
-      if (!isAnimating) {
-        isAnimating = true;
-        rafRef.current = requestAnimationFrame(smoothScroll);
-      }
-    };
-    
-    const smoothScroll = () => {
-      const diff = scrollRef.current.target - scrollRef.current.current;
-      
-      // Stop animating if difference is negligible (< 0.5px)
-      if (Math.abs(diff) > 0.5) {
-        scrollRef.current.current += diff * ease;
-        window.scrollTo(0, scrollRef.current.current);
-        rafRef.current = requestAnimationFrame(smoothScroll);
-      } else {
-        // Snap to target and stop
-        scrollRef.current.current = scrollRef.current.target;
-        window.scrollTo(0, scrollRef.current.current);
-        isAnimating = false;
-        rafRef.current = null;
-      }
-    };
-    
-    // Initialize scroll position
-    scrollRef.current.current = window.scrollY;
-    scrollRef.current.target = window.scrollY;
-    
-    const handleKeyDown = (e) => {
-      const scrollAmount = 100;
-      let shouldScroll = false;
-      
-      if (e.key === 'ArrowDown' || e.key === 'PageDown') {
-        e.preventDefault();
-        scrollRef.current.target += e.key === 'PageDown' ? window.innerHeight : scrollAmount;
-        shouldScroll = true;
-      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-        e.preventDefault();
-        scrollRef.current.target -= e.key === 'PageUp' ? window.innerHeight : scrollAmount;
-        shouldScroll = true;
-      } else if (e.key === 'Home') {
-        e.preventDefault();
-        scrollRef.current.target = 0;
-        shouldScroll = true;
-      } else if (e.key === 'End') {
-        e.preventDefault();
-        scrollRef.current.target = document.documentElement.scrollHeight - window.innerHeight;
-        shouldScroll = true;
-      }
-      
-      if (shouldScroll) {
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        scrollRef.current.target = Math.max(0, Math.min(scrollRef.current.target, maxScroll));
-        
-        // Start animation if not already running
-        if (!isAnimating) {
-          isAnimating = true;
-          rafRef.current = requestAnimationFrame(smoothScroll);
-        }
-      }
-    };
-    
-    const handleResize = () => {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      scrollRef.current.target = Math.min(scrollRef.current.target, maxScroll);
-    };
-    
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('resize', handleResize);
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-    };
-  }, [isTouchDevice]);
 
   useEffect(() => {
     if (isTouchDevice) return;
