@@ -3,15 +3,77 @@ import { BrowserRouter as Router, Routes, Route, useNavigate, useParams } from '
 import './index.css';
 import projects from './projects.json';
 
-// Helper function to handle image URLs with base path
+const ASCII_ART = `                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                            =======                                                 
+                                        =++-=-=-==--====                                            
+                                     ===+=-=+*#####*++++===                                         
+                                  ===++*#%@@@@@@@@@@@@@%#*++==                                      
+                                ++++*#%@@@@@@@@@@@@@@@@@@@%#*++                                     
+                               +*+*%@@@@@@@@@@@@@@@@@@@@@@@@@%*+                                    
+                              +++#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%#                                   
+                              +#%@@@@@@@@@@%%%%#####%%@@@@@@@@@@@%%                                 
+                             +#@@@@@@@@@@@@%#********#@@@@@@@@@@@@%                                 
+                             *%@@@@@@@@@@@%%%*+++++++**#%%%@@@@@@@##                                
+                           #**%@@@@%@@@@%%%@%*++++++++++***#%@@@%##*#                               
+                           #*%%@@@@@%%%@@@@@#+===========+++*#%@@@%**                               
+                           *#%@@@@%%%%@@@@%*+=========+++*++++#@@@%%*                               
+                           *%%%@@@#**%%@@@%%#*++===+#%%%%%###++%@%%%*                               
+                           *%%@@@%**%%#**##%%%*+==+*##**+++***++%%%%%                               
+                            @@@@@*+##*#########*=-=#%%###***++#%#%%+-=                              
+                           ==%@%##%%##%%%%#*##%#+=+#*####****+++=#++*+=                             
+                           +***%*+*#++**********=--++++**++======+=-=+=                             
+                           +*++#++=++========+*+=--=====------=-=+*+==                              
+                           ++=*#+====-----===++=----=====--------+++==                              
+                           ==+*+*==========+*+===----=+***+==---=*=-=+                              
+                            ===+#+======++****%#*++*#*+++*#*+====*=-=                               
+                             ===#*+=+=++##**##%%@%%%%####%%%*+=+*#+=                                
+                             +=+##*++++#%%%######**+***#%%%%++***##                                 
+                                #%###*+*%##@%#*++==--==+++##++*####                                 
+                                 %####*+#*+++++++++=======*#####%%                                  
+                                 %%%%###%*+==+==+++=+=====###%%%%#                                  
+                                  %%%%%%%##++*#%%%###*+++*#%%%%%*                                   
+                                   %@@@%%%%#**+*#***++*+*##%%%%*=                                   
+                                   +*%@%%%%####*++++++*###%%@%*===                                  
+                                 *  +*%@@@@%%###**#*#*%#%%%%%*====                                  
+                             +++*###++**%@@@@@@%%%%%%%@@%%%#++===--:..                              
+                             *++***%*+++*##%@@@@@@@@@@@@%*+++=====--:..:..  +++*****++++**+         
+                             #***+*##++++**###%%%@@@%%#*+++========-:::::::+*******++++******       
+                           *########*++++++**######***++++========-::::::=**####********##*****     
+                          **###%%#####+++++++****#***++++=========-:::::+*######****###**++++++++++ 
+                       **+**#%##%%#####*+++++++*****++++=========-::::-*#######**############%%%@%##
+                      *#***##%%##%%######*+++++++++++++=========--:::=*######**#########%%@@%#*****+
+                   ++**#######%%###########*+++++++++++++=====---:::=#######*#######%%%@@%###******#
+                 ++*****#%%%###%@###########*++++****++++==----::::+#############%%%@%%%###****#####
+             +++******#####%@%###%%#####%%%%*++++++++++==----:::::+#########%%%%%%%%####***######## 
+          *############**###%%@%##%@%###%%%%%+=======----------::+###########*##***#########%%##### 
+         %#*-::::-*###%%%##**#%%@%##%@%###%##+=======----:--:-::*###*##%@@%%%######%%%%%%%%%####### 
+        +-:.::::::::-*##%%%%%####%%%%%%%%##%#*======++*#######******#%@@@@@@@@@@%%######%#%#######  
+      :::::::::::::::::-+#%%%%%%%####%%%%@%%%##*###############%#####*##*#%%%#%@@@@%%############   
+    ::...::::::::::::::::-=*#%%%%%@@%###%%%@@%%#############%%%@%%%%%%%%****##%#%%@@@@%#########    
+      ::::::::::::::::::-----=+*#%%%%%@@@%%%%@@@#####%#######%%%@@@@%%%@#****#*#%#%%%@@%#####*      
+        :::::::::::::::--:::::--=+*##%%%%%@@@@@@@%%%%#%%%%%%%%@@@@@@@@@%#####*%##%##%%%%%###        
+            ::::::::::-::::::::----===+%@@@@@@@@@@%@@@%%%%@@%@@@@@@@@@@########%##@##%%%            
+                    ::-::::::::-::::-=#%%##%%%@@@@@@%%@@@@@@@@@@@%%%%@@########@                    `;
+
+function renderInline(text) {
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**'))
+      return <strong key={i}>{part.slice(2, -2)}</strong>;
+    if (part.startsWith('*') && part.endsWith('*'))
+      return <em key={i}>{part.slice(1, -1)}</em>;
+    return part;
+  });
+}
+
 const getImageUrl = (path) => {
-  // Handle external URLs (like GitHub opengraph images)
-  if (path.startsWith('http://') || path.startsWith('https://')) {
-    return path;
-  }
-  // Prepend base URL for local images
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
   const base = import.meta.env.BASE_URL || '/';
-  // Remove leading slash from path if base already ends with one
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
   return `${base}${cleanPath}`;
 };
@@ -21,7 +83,7 @@ export default function Portfolio() {
     <Router basename={import.meta.env.BASE_URL || ''}>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/project/:projectId" element={<ProjectDetailPageWrapper />} />
+        <Route path="/project/:projectId" element={<ProjectDetailPage />} />
       </Routes>
     </Router>
   );
@@ -29,553 +91,165 @@ export default function Portfolio() {
 
 function HomePage() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('all');
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [isPressed, setIsPressed] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
-  const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [tooltipData, setTooltipData] = useState({ logo: '', url: '' });
-  const [slideDirection, setSlideDirection] = useState('left');
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
-  const tabOrder = ['all', 'web', 'ai', 'ux'];
-
-  // Detect touch device
-  useEffect(() => {
-    const checkTouchDevice = () => {
-      const hasTouchScreen = (
-        'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0 ||
-        window.matchMedia('(hover: none) and (pointer: coarse)').matches
-      );
-      const isSmallScreen = window.innerWidth <= 768;
-      setIsTouchDevice(hasTouchScreen || isSmallScreen);
-    };
-    
-    checkTouchDevice();
-    window.addEventListener('resize', checkTouchDevice);
-    
-    return () => window.removeEventListener('resize', checkTouchDevice);
-  }, []);
-  
-
-
-  useEffect(() => {
-    if (isTouchDevice) return;
-    
-    const handleMouseMove = (e) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
-      
-      setTooltipPos(prev => ({
-        x: prev.x + (e.clientX - prev.x) * 0.10,
-        y: prev.y + (e.clientY - prev.y) * 0.10
-      }));
-      
-      if (!isVisible) setIsVisible(true);
-    };
-    
-    const handleMouseDown = () => setIsPressed(true);
-    const handleMouseUp = () => setIsPressed(false);
-    const handleMouseLeave = () => setIsVisible(false);
-    const handleMouseEnter = () => setIsVisible(true);
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
-    document.documentElement.addEventListener('mouseleave', handleMouseLeave);
-    document.documentElement.addEventListener('mouseenter', handleMouseEnter);
-    
-    const links = document.querySelectorAll('a[data-tooltip]');
-    links.forEach(link => {
-      link.addEventListener('mouseenter', (e) => {
-        setTooltipData({
-          logo: e.target.getAttribute('data-logo'),
-          url: e.target.getAttribute('data-url')
-        });
-        setTooltipVisible(true);
-      });
-      link.addEventListener('mouseleave', () => {
-        setTooltipVisible(false);
-      });
-    });
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
-      document.documentElement.removeEventListener('mouseleave', handleMouseLeave);
-      document.documentElement.removeEventListener('mouseenter', handleMouseEnter);
-    };
-  }, [isVisible, isTouchDevice]);
-  
-  const filteredProjects = activeTab === 'all' 
-    ? projects 
-    : projects.filter(p => p.category === activeTab);
-
-  const openProject = (projectId) => {
-    navigate(`/project/${projectId}`);
-  };
 
   return (
-    <div className="portfolio-container">
-      {/* Liquid Glass Cursor */}
-      {!isTouchDevice && isVisible && (
-        <div 
-          className="liquid-cursor"
-          style={{
-            left: cursorPos.x,
-            top: cursorPos.y,
-            transform: `translate(-50%, -50%) scale(${isPressed ? 0.75 : 1})`,
-            width: '36px',
-            height: '36px'
-          }}
-        >
-          <div className="liquid-cursor-body" />
-          <div className="liquid-cursor-dot">
-            <div className="liquid-cursor-dot-inner" />
+    <div className="page">
+      <header className="site-header">
+        <h1 className="site-name">Soheil Lotfi</h1>
+        <div className="site-header-top">
+          <div className="site-header-left">
+            <p className="site-bio">
+              MSc student at{' '}
+              <a href="https://www.ip-paris.fr/" target="_blank" rel="noopener noreferrer">
+                Institut Polytechnique de Paris
+              </a>{' '}
+              working at the intersection of HCI and AI. My research interests center on two threads:
+              how AI is redrawing the boundaries of interaction — as more tasks get delegated to
+              models, where does the human role go, and how do we design for that shift — and how
+              sustained AI use quietly reshapes human cognition, and whether we can design systems
+              that push back against that. Currently interning at{' '}
+              <a href="https://www.lisn.upsaclay.fr/" target="_blank" rel="noopener noreferrer">
+                LISN–CNRS
+              </a>
+              , building a collaborative AI platform for French Sign Language with the Deaf community.
+              Outside of research, I'm a former competitive speedcuber and a lifelong tennis player.
+              <br /><br />
+              <span className="phd-badge">Actively looking for a PhD position</span>
+            </p>
+            <nav className="site-links">
+              <a href="https://www.linkedin.com/in/soheil-lotfi" target="_blank" rel="noopener noreferrer">
+                LinkedIn ↗
+              </a>
+              <span className="site-links-sep">·</span>
+              <a href="mailto:soheil.lotfi@ip-paris.fr">Contact</a>
+            </nav>
           </div>
+          <pre className="ascii-portrait">{ASCII_ART}</pre>
         </div>
-      )}
-      
-      {/* Glass Tooltip */}
-      {!isTouchDevice && tooltipVisible && (
-        <div 
-          className="glass-tooltip"
-          style={{
-            left: tooltipPos.x,
-            top: tooltipPos.y,
-            opacity: tooltipVisible ? 1 : 0,
-          }}
-        >
-          {tooltipData.logo && <img src={tooltipData.logo} alt="site logo" className="tooltip-logo" />}
-          <span className="tooltip-url">{tooltipData.url}</span>
-        </div>
-      )}
-
-      {/* Header */}
-      <header className="portfolio-header">
-        <h1 className="portfolio-name">Soheil Lotfi</h1>
-        <p className="portfolio-bio">
-          HCI Student at the intersection of HCI, UX, and AI
-          <br />
-          Master's student in HCI at <a 
-            href="https://www.ip-paris.fr/" 
-            target="_blank"
-            data-tooltip="true"
-            data-logo="https://www.google.com/s2/favicons?sz=64&domain=ip-paris.fr"
-            data-url="ip-paris.fr"
-          ><span className="portfolio-bio-underline">Institut Polytechnique de Paris</span></a>.
-        </p>
-        <div className="portfolio-header-links">
-          <a 
-            href="https://www.linkedin.com/in/soheil-lotfi" 
-            className="portfolio-more-info" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            data-tooltip="true"
-            data-logo="https://cdn-icons-png.flaticon.com/512/174/174857.png"
-            data-url="linkedin.com"
-          >
-            ↗ LinkedIn
-          </a>
-          <span className="portfolio-link-separator">·</span>
-          <a 
-            href="mailto:soheil.lotfi@ip-paris.fr" 
-            className="portfolio-more-info"
-            data-tooltip="true"
-            data-logo="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico"
-            data-url="soheil.lotfi@ip-paris.fr"
-            target='_blank'
-          >
-            Contact
-          </a>
-        </div>
-        <div className='portfolio-bio'>* My research has not been discussed here.</div>
       </header>
 
-      {/* Tabs */}
-      <nav className="portfolio-tabs">
-        <button 
-          onClick={() => {
-            if (tabOrder.indexOf('all') > tabOrder.indexOf(activeTab)) {
-              setSlideDirection('right');
-            } else {
-              setSlideDirection('left');
-            }
-            setActiveTab('all');
-          }}
-          className={`portfolio-tab ${activeTab === 'all' ? 'active' : ''}`}
-        >
-          All
-        </button>
-        <button 
-          onClick={() => {
-            if (tabOrder.indexOf('web') > tabOrder.indexOf(activeTab)) {
-              setSlideDirection('right');
-            } else {
-              setSlideDirection('left');
-            }
-            setActiveTab('web');
-          }}
-          className={`portfolio-tab ${activeTab === 'web' ? 'active' : ''}`}
-        >
-          Web
-        </button>
-        <button 
-          onClick={() => {
-            if (tabOrder.indexOf('ai') > tabOrder.indexOf(activeTab)) {
-              setSlideDirection('right');
-            } else {
-              setSlideDirection('left');
-            }
-            setActiveTab('ai');
-          }}
-          className={`portfolio-tab ${activeTab === 'ai' ? 'active' : ''}`}
-        >
-          AI
-        </button>
-        <button 
-          onClick={() => {
-            if (tabOrder.indexOf('ux') > tabOrder.indexOf(activeTab)) {
-              setSlideDirection('right');
-            } else {
-              setSlideDirection('left');
-            }
-            setActiveTab('ux');
-          }}
-          className={`portfolio-tab ${activeTab === 'ux' ? 'active' : ''}`}
-        >
-          UX
-        </button>
-      </nav>
+      <main>
+        <h2 className="projects-heading">Projects</h2>
 
-      {/* Projects Grid */}
-      <div className="portfolio-grid" key={activeTab} data-direction={slideDirection}>
-        {filteredProjects.map((project) => (
-          <ProjectCard key={project.id} project={project} onClick={() => openProject(project.id)} />
-        ))}
-      </div>
+        <ul className="project-list">
+          {projects.map((project) => (
+            <ProjectRow key={project.id} project={project} onClick={() => navigate(`/project/${project.id}`)} />
+          ))}
+        </ul>
+      </main>
     </div>
   );
 }
 
-function ProjectCard({ project, onClick }) {
+function ProjectRow({ project, onClick }) {
   const [imageError, setImageError] = useState(false);
-  
+
   return (
-    <article 
-      className="portfolio-card"
-      onClick={onClick}
-      style={{ cursor: 'pointer' }}
-    >
-      <div className="portfolio-image-wrapper">
+    <li className="project-row" onClick={onClick}>
+      <div className="project-row-thumb">
         {imageError ? (
-          <div 
-            style={{
-              width: '100%',
-              height: '100%',
-              backgroundColor: '#e8e6e3',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'column',
-              gap: '12px'
-            }}
-          >
-            <svg 
-              width="48" 
-              height="48" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="#999"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-              <circle cx="8.5" cy="8.5" r="1.5"/>
-              <polyline points="21 15 16 10 5 21"/>
-            </svg>
-            <span style={{ color: '#999', fontSize: '12px', fontWeight: '500' }}>
-              Image not available
-            </span>
-          </div>
+          <div className="project-row-thumb-placeholder" />
         ) : (
-          <img 
-            src={getImageUrl(project.image)} 
+          <img
+            src={getImageUrl(project.image)}
             alt={project.title}
             onError={() => setImageError(true)}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover'
-            }}
           />
         )}
-        {project.badge && (
-          <div className="portfolio-badge">
-            <span className="portfolio-badge-dash">—</span>
-            <span className="portfolio-badge-title">{project.badge}</span>
-            <span className="portfolio-badge-sub">{project.badgeSub}</span>
-          </div>
-        )}
       </div>
-      
-      <div className="portfolio-card-content">
-        <h3 className="portfolio-project-title">
-          <span className="portfolio-project-title-bold">{project.title}</span>
-          <span className="portfolio-project-title-light"> {project.subtitle}</span>
-        </h3>
-        
-        <div className="portfolio-tag-row">
-          <span className="portfolio-tag">{project.year}</span>
-          {project.tags.map((tag, i) => (
-            <span key={i} className="portfolio-tag">{tag}</span>
-          ))}
+      <div className="project-row-info">
+        <div className="project-row-top">
+          <span className="project-row-title">{project.title}</span>
+          <span className="project-row-year">{project.year}</span>
         </div>
+        <p className="project-row-subtitle">{project.subtitle}</p>
+        <p className="project-row-tags">{project.tags.join(' · ')}</p>
       </div>
-    </article>
+    </li>
   );
 }
 
-function ProjectDetailPageWrapper() {
+function ProjectDetailPage() {
   const { projectId } = useParams();
   const navigate = useNavigate();
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [isPressed, setIsPressed] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
-  const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [tooltipData, setTooltipData] = useState({ logo: '', url: '' });
-  
+  const [imageError, setImageError] = useState(false);
+
   const project = projects.find(p => p.id === parseInt(projectId));
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [projectId]);
-  
-  // Detect touch device
-  useEffect(() => {
-    const checkTouchDevice = () => {
-      const hasTouchScreen = (
-        'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0 ||
-        window.matchMedia('(hover: none) and (pointer: coarse)').matches
-      );
-      const isSmallScreen = window.innerWidth <= 768;
-      setIsTouchDevice(hasTouchScreen || isSmallScreen);
-    };
-    
-    checkTouchDevice();
-    window.addEventListener('resize', checkTouchDevice);
-    
-    return () => window.removeEventListener('resize', checkTouchDevice);
-  }, []);
 
-
-  useEffect(() => {
-    if (isTouchDevice) return;
-    
-    const handleMouseMove = (e) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
-      
-      setTooltipPos(prev => ({
-        x: prev.x + (e.clientX - prev.x) * 0.10,
-        y: prev.y + (e.clientY - prev.y) * 0.10
-      }));
-      
-      if (!isVisible) setIsVisible(true);
-    };
-    
-    const handleMouseDown = () => setIsPressed(true);
-    const handleMouseUp = () => setIsPressed(false);
-    const handleMouseLeave = () => setIsVisible(false);
-    const handleMouseEnter = () => setIsVisible(true);
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
-    document.documentElement.addEventListener('mouseleave', handleMouseLeave);
-    document.documentElement.addEventListener('mouseenter', handleMouseEnter);
-    
-    const links = document.querySelectorAll('a[data-tooltip]');
-    links.forEach(link => {
-      link.addEventListener('mouseenter', (e) => {
-        setTooltipData({
-          logo: e.target.getAttribute('data-logo'),
-          url: e.target.getAttribute('data-url')
-        });
-        setTooltipVisible(true);
-      });
-      link.addEventListener('mouseleave', () => {
-        setTooltipVisible(false);
-      });
-    });
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
-      document.documentElement.removeEventListener('mouseleave', handleMouseLeave);
-      document.documentElement.removeEventListener('mouseenter', handleMouseEnter);
-    };
-  }, [isVisible, isTouchDevice]);
-  
   if (!project) {
     return (
-      <div className="portfolio-container">
-        <div className="project-detail-page">
-          <h1>Project not found</h1>
-          <button onClick={() => navigate('/')} className="back-button">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Back to projects
-          </button>
-        </div>
+      <div className="page">
+        <button className="back-link" onClick={() => navigate('/')}>← Back</button>
+        <p>Project not found.</p>
       </div>
     );
   }
 
-  const goBackHome = () => {
-    navigate('/');
-  };
-
   return (
-    <div className="portfolio-container">
-      {/* Liquid Glass Cursor */}
-      {!isTouchDevice && isVisible && (
-        <div 
-          className="liquid-cursor"
-          style={{
-            left: cursorPos.x,
-            top: cursorPos.y,
-            transform: `translate(-50%, -50%) scale(${isPressed ? 0.75 : 1})`,
-            width: '36px',
-            height: '36px'
-          }}
-        >
-          <div className="liquid-cursor-body" />
-          <div className="liquid-cursor-dot">
-            <div className="liquid-cursor-dot-inner" />
+    <div className="page">
+      <button className="back-link" onClick={() => navigate('/')}>← Back</button>
+
+      <article className="project-article">
+        <header className="project-article-header">
+          <p className="project-article-meta">{project.year} · {project.tags.join(' · ')}</p>
+          <h1 className="project-article-title">{project.title}</h1>
+          <p className="project-article-subtitle">{project.subtitle}</p>
+        </header>
+
+        {!imageError && (
+          <div className="project-article-image">
+            <img
+              src={getImageUrl(project.image)}
+              alt={project.title}
+              onError={() => setImageError(true)}
+            />
           </div>
-        </div>
-      )}
-      
-      {/* Glass Tooltip */}
-      {!isTouchDevice && tooltipVisible && (
-        <div 
-          className="glass-tooltip"
-          style={{
-            left: tooltipPos.x,
-            top: tooltipPos.y,
-            opacity: tooltipVisible ? 1 : 0,
-          }}
-        >
-          {tooltipData.logo && <img src={tooltipData.logo} alt="site logo" className="tooltip-logo" />}
-          <span className="tooltip-url">{tooltipData.url}</span>
-        </div>
-      )}
-
-      <ProjectDetailPage project={project} onBack={goBackHome} />
-    </div>
-  );
-}
-
-function ProjectDetailPage({ project, onBack }) {
-  const [imageError, setImageError] = useState(false);
-
-  return (
-    <div className="project-detail-page">
-      {/* Back button */}
-      <button className="back-button" onClick={onBack}>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M19 12H5M12 19l-7-7 7-7"/>
-        </svg>
-        Back to projects
-      </button>
-
-      {/* Project header */}
-      <div className="project-detail-header">
-        <h1 className="project-detail-title">{project.title}</h1>
-        <p className="project-detail-subtitle">{project.subtitle}</p>
-        
-        <div className="project-detail-tags">
-          <span className="project-detail-tag">{project.year}</span>
-          {project.tags.map((tag, i) => (
-            <span key={i} className="project-detail-tag">{tag}</span>
-          ))}
-        </div>
-      </div>
-
-      {/* Project image */}
-      <div className="project-detail-image-wrapper">
-        {imageError ? (
-          <div className="project-detail-image-placeholder">
-            <svg 
-              width="80" 
-              height="80" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="#999"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-              <circle cx="8.5" cy="8.5" r="1.5"/>
-              <polyline points="21 15 16 10 5 21"/>
-            </svg>
-            <span>Image not available</span>
-          </div>
-        ) : (
-          <img 
-            src={getImageUrl(project.image)} 
-            alt={project.title}
-            onError={() => setImageError(true)}
-          />
         )}
-      </div>
 
-      {/* Project content */}
-      <div className="project-detail-content">
-        <div className="project-detail-section">
-          <h2 className="project-detail-section-title">About this project</h2>
-          <p className="project-detail-description">{project.description}</p>
+        <div className="project-article-body">
+          {project.sections ? (
+            project.sections.map((s, i) => (
+              <div key={i} className="project-section">
+                {s.heading && <h2 className="project-section-heading">{s.heading}</h2>}
+                {s.subheading && <h3 className="project-section-subheading">{s.subheading}</h3>}
+                {s.body && s.body.split('\n\n').map((para, j) => <p key={j}>{renderInline(para)}</p>)}
+                {s.image && (
+                  <div className="project-section-image">
+                    <img src={getImageUrl(s.image)} alt={s.heading || ''} />
+                    {s.caption && <p className="project-section-caption">{s.caption}</p>}
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            project.description.split('\n\n').map((para, i) => <p key={i}>{renderInline(para)}</p>)
+          )}
         </div>
 
-        {(project.repo || project.notion) && (
-          <div className="project-detail-actions">
+        {(project.repo || project.notion || project.weblog) && (
+          <div className="project-article-links">
             {project.repo && (
-              <a 
-                href={project.repo} 
-                className="project-detail-github-link" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                data-tooltip="true"
-                data-logo="https://github.githubassets.com/favicons/favicon.svg"
-                data-url="github.com"
-              >
+              <a href={project.repo} target="_blank" rel="noopener noreferrer">
                 View on GitHub ↗
               </a>
             )}
+            {project.weblog && (
+              <a href={project.weblog} target="_blank" rel="noopener noreferrer">
+                Our Course Weblog ↗
+              </a>
+            )}
             {project.notion && (
-              <a 
-                href={project.notion} 
-                className="project-detail-notion-link" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                data-tooltip="true"
-                data-logo="https://www.notion.so/images/favicon.ico"
-                data-url="notion.so"
-              >
+              <a href={project.notion} target="_blank" rel="noopener noreferrer">
                 View Case Study ↗
               </a>
             )}
           </div>
         )}
-      </div>
+      </article>
     </div>
   );
 }

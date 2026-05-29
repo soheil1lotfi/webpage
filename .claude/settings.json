@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:chenglou.me)",
+      "Read(//tmp/**)",
+      "Read(//private/tmp/**)",
+      "WebFetch(domain:arsalan-fard.github.io)",
+      "Bash(curl -s \"https://raw.githubusercontent.com/arsalan-fard/Soheil-Arsalan_MR/main/posts/project-01.md\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/arsalan-fard/Soheil-Arsalan_MR/refs/heads/main/posts/project-01.md\")",
+      "Bash(curl -s \"https://api.github.com/repos/arsalan-fard/Soheil-Arsalan_MR/git/trees/main?recursive=1\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/arsalan-fard/Soheil-Arsalan_MR/main/posts/lecture-01.md\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/arsalan-fard/Soheil-Arsalan_MR/main/posts/tutorial-01.md\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/arsalan-fard/Soheil-Arsalan_MR/main/posts/tutorial-02.md\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/arsalan-fard/Soheil-Arsalan_MR/main/src/js/data.js\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/arsalan-fard/Soheil-Arsalan_MR/main/README.md\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/arsalan-fard/Soheil-Arsalan_MR/main/package.json\")"
+    ]
+  }
+}

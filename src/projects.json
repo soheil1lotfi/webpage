@@ -1,32 +1,279 @@
 [
   {
-    "id": 1,
-    "title": "Cursor Tracker",
-    "subtitle": "A Chrome extension that tracks cursor movements and interactions for behavior analysis.",
-    "year": "2024",
-    "tags": ["Chrome Extension", "JavaScript", "Python", "Data"],
+    "id": 11,
+    "title": "Collaborative AI for French Sign Language",
+    "subtitle": "Building an interactive machine teaching platform that lets Deaf teachers collect signs and train a recognition model — natively in LSF.",
+    "year": "2026",
+    "tags": [
+      "Research",
+      "HCI",
+      "Participatory Design",
+      "Machine Learning",
+      "Sign Language"
+    ],
+    "category": "ai",
+    "sections": [
+      {
+        "body": "This is my ongoing second-year research internship at LISN–CNRS, supervised by Dr. Jules Françoise and Dr. Baptiste Caramiaux, in close collaboration with Sign'Maths — an organization that develops mathematical resources in French Sign Language (LSF).\n\nThe project addresses a concrete gap: existing sign language lexicons are sparse, especially in specialized domains like mathematics, and the tools that exist for sign search and creation were not designed with or for the Deaf community. The goal is to build a collaborative AI platform where Deaf teachers can collect new signs, teach a model new vocabulary, and interact with a recognition system — all natively in LSF, without going through a hearing intermediary."
+      },
+      {
+        "heading": "The Research Question",
+        "body": "How do you design a system where the people who know the language are also the ones who train the model?\n\nThis is the core tension the project sits in. Standard machine learning pipelines assume a separation between data labelers and model trainers, with researchers as the intermediaries. Here, the aim is to collapse that separation — making the Deaf teachers themselves the agents of the system's knowledge. The interaction paradigm we're grounding this in is Interactive Machine Teaching (IMT): a framework where users leverage their natural teaching abilities to iteratively guide and correct a model, rather than passively annotating data."
+      },
+      {
+        "heading": "What I've Done So Far",
+        "body": "The project is structured in phases. In the first phase, I contributed to a literature review motivating the need for such systems on both cultural and technical grounds — covering prior work on sign language recognition, participatory AI, and IMT. I also ran an analysis of pre-trained pose encoders on the targeted data (LSF signs extracted as keypoint sequences), which informed the technical direction of the system.\n\nI am currently contributing to a formative study with the Deaf and Hard of Hearing community. This involves participatory observation and semi-structured interviews with Deaf teachers and Sign'Maths collaborators to understand their existing workflows, the friction points in current sign search tools, and what a useful system would actually look like from their perspective."
+      },
+      {
+        "heading": "What's Next",
+        "body": "The next phases involve the design and implementation of the collaborative platform itself — built around an IMT interaction loop where teachers can demonstrate signs, review model outputs, correct errors, and progressively refine the recognition system. This will be followed by a mixed-method user study with the different stakeholders to evaluate the research prototype, assessing both usability and the quality of the resulting model.\n\nThe broader ambition is for the platform to feed into Sign'Maths' sign recognition infrastructure, enabling Deaf users to perform a range of tasks — sign search, lexicon expansion, educational content creation — natively and autonomously."
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Private Spaces in a Shared Canvas",
+    "subtitle": "Real-time collaborative canvas with a private mode — users share a live workspace but can retreat into an isolated space invisible to others, then selectively share back.",
+    "year": "2026",
+    "tags": [
+      "CSCW",
+      "React",
+      "Y.js",
+      "WebSockets",
+      "Collaborative Systems"
+    ],
     "category": "web",
-    "image": "https://opengraph.githubassets.com/1/soheil1lotfi/cursor-tracker",
-    "repo": "https://github.com/soheil1lotfi/cursor-tracker",
-    "description": "A comprehensive Chrome extension designed to track and analyze user cursor movements and interactions on web pages. This tool captures detailed behavioral data including mouse positions, clicks, scrolls, and dwell times. Built with vanilla JavaScript for the extension frontend and Python for data processing and analysis. The collected data can be used for UX research, heatmap generation, and understanding user behavior patterns. Features include real-time tracking, data export capabilities, and privacy-focused design with user consent mechanisms."
+    "image": "images/projects/private-spaces/features.jpg",
+    "repo": "https://github.com/soheil1lotfi/private-spaces",
+    "sections": [
+      {
+        "body": "Course project at Université Paris-Saclay, taught by Michel Beaudouin-Lafon, with Natacha Malychev and Nazrin Nasirova.\n\nCollaborative tools tend to polarize: either everyone sees everything in real time (WYSIWIS — What You See Is What I See), or collaboration is fully asynchronous and disconnected. There is a missing middle ground — the space where people work alongside each other but retain the ability to think privately before sharing. Private Spaces in a Shared Canvas is a real-time collaborative drawing tool built to occupy exactly that gap."
+      },
+      {
+        "heading": "The Problem",
+        "body": "Real collaborative work is fluid. Teams move between tight, synchronous coordination and looser, more independent work — often within the same session. Existing tools don't model this well: whiteboard apps force full transparency, while document-based async tools lose the presence and immediacy of shared space.\n\nThe specific behaviors we wanted to support: exploration without judgment (drafting ideas before they're ready to share), preparation before revealing, and selective disclosure — the user decides what goes public and when."
+      },
+      {
+        "heading": "Core Features",
+        "body": "The shared canvas supports real-time synchronization of shape creation, movement, and deletion across all connected users. Group awareness is built into the interface at multiple levels:\n\n– **Telepointers**: each user's cursor appears on everyone else's canvas with a nickname and color.\n– **Presence Panel**: a live sidebar showing who is online and their current status.\n– **Shape Counter**: tracks the total number of public shapes versus private ones, giving users a sense of the collective canvas state.",
+        "image": "images/projects/private-spaces/features.jpg",
+        "caption": "Two users (BraveWolf and CleverEagle) sharing a live canvas — cursors, shapes, and presence are all visible in real time."
+      },
+      {
+        "heading": "Private Mode",
+        "body": "Clicking \"Go Private\" triggers an informed consent dialog — an explicit acknowledgement that your changes will no longer be visible to others. Once confirmed:\n\n– The canvas gets a red border and a \"Private\" label.\n– Your cursor disappears from other participants' screens.\n– Shapes created in private mode are stored in localStorage rather than the shared Y.js document, and rendered with a dashed outline to distinguish them visually.\n\nWhen you're ready, an explicit \"Share\" action publishes selected private shapes back to the shared canvas — on your terms.",
+        "image": "images/projects/private-spaces/private-mode.jpg",
+        "caption": "The informed consent dialog before entering private mode. Once enabled, a red border frames the canvas to signal isolation."
+      },
+      {
+        "heading": "System Architecture",
+        "body": "The frontend is built with React and Konva.js for declarative 2D canvas rendering. Real-time sync runs on Y.js — a CRDT (Conflict-free Replicated Data Type) library — over WebSockets via y-websocket. Each client maintains a local Y.Doc replica with a Y.Map of shapes; the y-websocket server handles delta propagation and the awareness protocol (cursor positions, presence). MongoDB Atlas provides durable persistence across sessions.",
+        "image": "images/projects/private-spaces/figure.jpg",
+        "caption": "Each client holds a local Y.Doc replica. The y-websocket server propagates shape deltas and awareness updates between clients, and persists state to MongoDB."
+      },
+      {
+        "heading": "Why CRDTs?",
+        "body": "We first prototyped with a naive last-write-wins approach. The failure mode became obvious quickly: two users dragging overlapping groups of shapes caused unpredictable jumps at high speed; an offline user reconnecting would silently overwrite changes made while they were away; deleted shapes would reappear on reconnect.\n\nY.js CRDTs solve this by syncing operations rather than object states — merging concurrent edits automatically without locks or server arbitration. The divergence was most striking in offline/reconnect scenarios: the naive approach lost one user's work entirely; Y.js preserved both sets of edits. Other failure modes in the naive version included z-index conflicts producing inconsistent layering, and concurrent move + resize operations dropping partial updates.\n\nThe private mode sits outside this CRDT layer by design. Private shapes live in localStorage, completely bypassing the sync channel, until the user explicitly decides to share them."
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Magic Broom — VR Locomotion",
+    "subtitle": "A leaning-based VR locomotion technique using a physical broomstick prop — from concept and failed ideas to implementation and user study.",
+    "year": "2026",
+    "tags": [
+      "Mixed Reality",
+      "VR",
+      "HCI",
+      "Unity",
+      "User Study"
+    ],
+    "category": "ux",
+    "image": "images/projects/mr-course/p3-slide-01.jpg",
+    "repo": "https://github.com/soheil1lotfi/Soheil-Arsalan-MixedReality-Projects/tree/main/VR-locomotion-Soheil-Arsalan",
+    "weblog": "https://arsalan-fard.github.io/Soheil-Arsalan_MR/normal_mode/index.html",
+    "sections": [
+      {
+        "body": "Course project for HCI for Mixed Reality at Télécom Paris / Institut Polytechnique de Paris, with Arsalan Masoudifard.\n\nWe designed and implemented Magic Broom — an embodied VR locomotion technique where a user sits astride a physical broomstick prop and navigates a virtual world by leaning, tilting, and raising the stick. We then ran a small user study to evaluate cybersickness and usability. This post covers the full arc: the idea that failed first, the interaction design, the Unity implementation, and the study results."
+      },
+      {
+        "heading": "The Failed Idea First",
+        "body": "Our first concept was foot-based locomotion: strapping a controller to the user's leg to simulate skateboard-like kicking, with kick intensity driving speed. We abandoned it quickly — the tracking was unreliable, the posture awkward, and the interaction felt arbitrary rather than embodied.",
+        "image": "images/projects/mr-course/p2-slide-02.jpg",
+        "caption": "The failed idea: a controller attached to the leg to simulate skateboard-style kicking."
+      },
+      {
+        "heading": "Interaction Design",
+        "body": "The broom maps four physical gestures to four navigation primitives:\n\n– **Acceleration**: Leaning forward increases speed (75% from lean, 25% from button).\n– **Turning**: Tilting the broom left/right turns heading. Calibrated at session start to account for individual posture.\n– **Elevation**: Raising or lowering the broom tip controls altitude.\n– **Portal/Spell**: The left controller casts a portal for shortcuts and coin collection.",
+        "image": "images/projects/mr-course/p2-slide-04.jpg",
+        "caption": "Acceleration: leaning forward drives speed. The two controller positions define broom orientation in 3D space."
+      },
+      {
+        "image": "images/projects/mr-course/p2-slide-05.jpg",
+        "caption": "Turning: horizontal broom tilt maps to yaw. Calibration neutralises baseline posture differences between users."
+      },
+      {
+        "image": "images/projects/mr-course/p2-slide-06.jpg",
+        "caption": "Elevation (left): broom tip angle controls altitude. Spell (right): left controller opens a portal for teleportation."
+      },
+      {
+        "heading": "Implementation",
+        "body": "The prop is a household broomstick with one Meta Quest controller strapped to each end. Their relative positions are read after a calibration step and mapped to the virtual broom's orientation. The technique was implemented in Unity and evaluated inside a custom-built broomstick racing game where participants flew through a course collecting coins and passing through rings.",
+        "image": "images/projects/mr-course/p3-slide-04.jpg",
+        "caption": "Broom calibration maps the physical broom's angle to the virtual broom's orientation."
+      },
+      {
+        "image": "images/projects/mr-course/p3-slide-05.jpg",
+        "caption": "Controller calibration (left), vertical steering (center), and portal mechanic (right)."
+      },
+      {
+        "image": "images/projects/mr-course/chair-prop.jpg",
+        "caption": "The physical broom prop: seat and handle laser-cut from plywood, fitted over an office chair. The two Meta Quest controllers are clamped at either end of the handle."
+      },
+      {
+        "image": "images/projects/mr-course/demo.gif",
+        "caption": "A participant navigating the VR racing course — leaning forward to accelerate, tilting to turn."
+      },
+      {
+        "heading": "User Study",
+        "body": "7 participants (ages 18–30, mix of VR experience levels) each completed: 3 min setup, 5 min free exploration, 1 full race, then 10 min of questionnaires and a short discussion about fun and usability. Cybersickness was measured using the Simulator Sickness Questionnaire (SSQ) across three subscales: Nausea, Oculomotor strain, and Disorientation.",
+        "image": "images/projects/mr-course/p3-slide-09.jpg"
+      },
+      {
+        "heading": "Results",
+        "body": "Disorientation was the dominant symptom (mean 69.6), with Nausea and Oculomotor at ~39 each — indicating moderate overall cybersickness with high individual variability. Qualitatively, participants found the prop fun and the leaning mechanic intuitive after a short acclimatisation period.",
+        "image": "images/projects/mr-course/p3-slide-13.jpg",
+        "caption": "SSQ results: disorientation (D=69.6) was the highest subscale; total score indicates moderate cybersickness."
+      },
+      {
+        "heading": "Conclusion",
+        "body": "Magic Broom shows that a low-cost physical prop can meaningfully enhance embodiment in VR — the broomstick gave users something tangible to hold and lean into, and most found the interaction natural within minutes. That said, the moderate cybersickness scores, especially for disorientation, point to a real tension in leaning-based locomotion: the more the technique asks the body to commit to a movement, the more the vestibular mismatch with the visual field matters.\n\nThe study had clear limitations — small N, no comparison condition, self-reported data only. The honest next step would be an A/B test against a controller-only baseline, similar to the BroomBroom paper (Niehorster et al., 2024) we discovered mid-project. That paper validated that the idea space we were working in is worth taking seriously; it also set a bar worth measuring against."
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "title": "AI-Assisted Design & EEG",
+    "subtitle": "Neurocognitive and qualitative study on how text-to-image AI transforms designers' creative process.",
+    "year": "2025",
+    "tags": [
+      "Research",
+      "EEG",
+      "Generative AI",
+      "HCI"
+    ],
+    "category": "ai",
+    "image": "images/projects/eeg-design/p2_img1.png",
+    "sections": [
+      {
+        "body": "This research investigates how generative AI tools transform the creative process in design — objectively, through EEG brain signal capture, and subjectively, through in-depth qualitative interviews with designers.\n\nThe study runs on two parallel tracks. The first is neurocognitive: EEG recording tracks how brain activity shifts when designers work with a text-to-image tool versus manual sketching. The second is qualitative: a retrospective interview protocol, drawn from Jean-Claude Kaufmann's comprehensive interview method, documents how designers perceive, interpret, and negotiate the gaps between their intentions and what the AI produces.\n\nResearch by Samy Cheurfa — M2 Research in Design, Institut Polytechnique de Paris / ENS Paris-Saclay. Supervised by Dr Panos Mavros (Télécom Paris) & Dr Nathalie Guimbretère (ENSCI – Les Ateliers)."
+      },
+      {
+        "heading": "The Protocol",
+        "body": "40 designers across disciplines — graphic design, fashion, object design, architecture — each completed three successive T-shirt design tasks while wearing an EEG headset:\n\n– Task 1: Design the T-shirt manually on a digital tablet (no AI)\n– Task 2: Design the same T-shirt using the custom-built text-to-image interface\n– Task 3: Design the most original possible version using the same AI tool\n\nEach task followed a fixed structure: problem framing (2 min), divergent idea generation (8 min), idea evaluation (2 min), final submission (3 min). Psychometric pre-tests — an Alternate Uses Task (AUT) measuring divergent thinking and a resting-state basal alpha EEG baseline — established individual creative profiles before the experiment began."
+      },
+      {
+        "heading": "A Custom-Built Interface",
+        "body": "Rather than using commercial platforms like Midjourney or DALL·E, a dedicated generation interface was built from scratch using the Stability AI Stable Diffusion Ultra API and Qt framework. This enabled precise temporal synchronization between each prompt entry and the corresponding EEG signal — something no existing platform could offer. Every prompt was logged, generation history was preserved, and real-time markers were fed into the EEG recording software (Neuropype), enabling granular neurocognitive mapping of the prompting process.",
+        "image": "images/projects/eeg-design/p2_img1.png",
+        "caption": "Fig. 4 & 5 — The custom generation interface and schematic of the different experimental stages."
+      },
+      {
+        "heading": "Key Findings",
+        "subheading": "Frustration as the dominant experience",
+        "body": "Every participant described a persistent gap between their intended design and what the AI produced. Specific formal instructions were frequently ignored — one designer noted that despite writing \"one long sleeve,\" not a single result included one. After several failed attempts, another admitted having simply given up: \"Everything I was writing, it didn't give me what I imagined — it didn't understand what I was saying.\" The gap touched formal elements as much as symbolic or expressive ones, breaking the chain of intentionality at its core."
+      },
+      {
+        "subheading": "Retro-interpretation and cognitive erosion",
+        "body": "Each failed generation pushed designers to revisit and rewrite their own prompts — a cycle that gradually eroded the original creative impulse. Abstract concepts (schizophrenia, the inconceivable, sainthood) were consistently flattened into generic, polished outputs. In most cases, even after multiple iterations, participants couldn't get what they wanted. Attempts to provoke the unexpected ran into what they called \"the poverty of the database.\""
+      },
+      {
+        "subheading": "Loss of agency and authorship",
+        "body": "No participant felt creatively in control. Designers described themselves not as authors but as \"operators,\" \"selectors,\" \"curators,\" or \"co-parents\" of what the machine proposed. The AI imposed its own rhythm, visual vocabulary, and 15-second latency — each an interruption to the flow of thought.\n\n\"It was much more me adapting to the generations than the generation adapting to what I had originally in mind.\""
+      },
+      {
+        "subheading": "Aesthetic conservatism",
+        "body": "The generated images were overwhelmingly described as \"smooth\" — saturated with commercial visual codes, mock-up aesthetics, clean fashion photography. Even when designers invoked explicit cultural references (Radiohead, Supreme box logo), the results felt like stock imagery. \"Without artistic direction, it was a mock-up with no style.\""
+      },
+      {
+        "subheading": "Rare levers of co-creation",
+        "body": "A minority of moments pointed toward productive uses: rapid high-realism visualization of materials difficult to sketch by hand (fur, transparency, textile layering); instant mobilization of cultural and stylistic references; and occasional unexpected outputs that opened unforeseen creative directions — an AI placing a visual beside rather than on a T-shirt, read as an aesthetic signal rather than a mistake."
+      },
+      {
+        "heading": "Participant Sessions",
+        "image": "images/projects/eeg-design/p4_img1.png",
+        "caption": "Participant sessions — Adam (Designer/Urbaniste), Annabelle (Designer Graphique), Nicolas (Designer Graphique), Andréas (Designer de Mode/Plasticien), Theïs (Designer de Mode/Objet), Angie (Designer de Mode)."
+      },
+      {
+        "heading": "Preliminary EEG Results",
+        "body": "Early profiles suggest a clear contrast between the manual drawing phase — characterized by sustained beta activation and inhibited alpha rhythms, indicating continuous attentional and motor engagement — and the AI-assisted phases, which appear more discontinuous and biphasic: brief frontal activation during prompt entry, followed by a partial re-emergence of alpha during the more passive reception of generated images.\n\nThe EEG component ultimately served as much to structure the experimental conditions as to produce direct results. Thorough quantitative analysis is ongoing as a second trial of the experiment as part of the M2 research project."
+      },
+      {
+        "heading": "Limitations and Next Steps",
+        "body": "The current sample (N=6 filmed sessions) does not allow statistical generalization. The 15-minute task windows only partially reflect the long, iterative rhythms of real design processes. A longitudinal protocol — run over days or weeks — would allow observation of more complex forms of adaptation, saturation, and aesthetic acculturation with the tool. The psychometric scales used (AUT, basal alpha) also capture only fragmentary aspects of creativity; more contextually grounded evaluation criteria would produce richer results.\n\nKeywords: generative AI, assisted design, co-creation, agency, interpretive gap, prompt, generated image, algorithmic aesthetics, EEG, qualitative evaluation, iterative process, authorship."
+      }
+    ]
   },
   {
     "id": 2,
     "title": "Annotated Image Component",
     "subtitle": "Photo gallery application demonstrating MVC/PAC architecture and annotation features in Java Swing.",
     "year": "2025",
-    "tags": ["Java", "Desktop", "MVC", "Swing"],
+    "tags": [
+      "Java",
+      "Desktop",
+      "MVC",
+      "Swing"
+    ],
     "category": "ux",
     "image": "/images/projects/MVC-architecture.png",
     "repo": "https://github.com/soheil1lotfi/Annotated-Image-Component-in-Java-Swing",
     "description": "A sophisticated desktop application built with Java Swing that showcases clean software architecture through MVC (Model-View-Controller) and PAC (Presentation-Abstraction-Control) design patterns. The application allows users to manage photo galleries with advanced annotation capabilities, including text labels, shapes, and markup tools. Demonstrates best practices in GUI development, event handling, and separation of concerns. Features include multi-image management, annotation persistence, and an intuitive user interface following modern desktop design principles."
   },
   {
+    "id": 6,
+    "title": "Amazon Marketplace Visualizer",
+    "subtitle": "A Chrome extension for visualizing and analyzing Amazon marketplace data.",
+    "year": "2025",
+    "tags": [
+      "Chrome Extension",
+      "JavaScript",
+      "React",
+      "Data Viz"
+    ],
+    "category": "web",
+    "image": "/images/projects/junglemall.png",
+    "repo": "https://github.com/pandanautinspace/amazon-marketplace-visualizer",
+    "description": "A powerful Chrome extension that enhances the Amazon shopping experience by providing advanced data visualization and analysis tools. Built with React for a smooth, modern interface, this extension helps users make informed purchasing decisions by visualizing price trends, seller ratings, review distributions, and product comparisons. Features include interactive charts, historical price tracking, and seller analytics. The extension seamlessly integrates with Amazon's interface, providing real-time insights without disrupting the shopping flow."
+  },
+  {
+    "id": 1,
+    "title": "Cursor Tracker",
+    "subtitle": "A Chrome extension that tracks cursor movements and interactions for behavior analysis.",
+    "year": "2024",
+    "tags": [
+      "Chrome Extension",
+      "JavaScript",
+      "Python",
+      "Data"
+    ],
+    "category": "web",
+    "image": "https://opengraph.githubassets.com/1/soheil1lotfi/cursor-tracker",
+    "repo": "https://github.com/soheil1lotfi/cursor-tracker",
+    "description": "A comprehensive Chrome extension designed to track and analyze user cursor movements and interactions on web pages. This tool captures detailed behavioral data including mouse positions, clicks, scrolls, and dwell times. Built with vanilla JavaScript for the extension frontend and Python for data processing and analysis. The collected data can be used for UX research, heatmap generation, and understanding user behavior patterns. Features include real-time tracking, data export capabilities, and privacy-focused design with user consent mechanisms."
+  },
+  {
     "id": 3,
     "title": "Gestural Interaction",
     "subtitle": "Web conference prototype with real-time hand gesture recognition using MediaPipe and OpenCV.",
     "year": "2024",
-    "tags": ["Python", "Flask", "MediaPipe", "OpenCV"],
+    "tags": [
+      "Python",
+      "Flask",
+      "MediaPipe",
+      "OpenCV"
+    ],
     "category": "ai",
     "image": "/images/projects/gestural-interaction.png",
     "repo": "https://github.com/soheil1lotfi/gestural-interaction",
@@ -37,40 +284,28 @@
     "title": "IR-ALPR",
     "subtitle": "Iranian Automatic License Plate Recognition system using deep learning and computer vision.",
     "year": "2024",
-    "tags": ["Python", "Deep Learning", "Computer Vision", "Jupyter"],
+    "tags": [
+      "Python",
+      "Deep Learning",
+      "Computer Vision",
+      "Jupyter"
+    ],
     "category": "ai",
     "image": "/images/projects/plate-detection.png",
     "repo": "https://github.com/pandanautinspace/IR-ALPR",
     "description": "A specialized Automatic License Plate Recognition (ALPR) system tailored for Iranian license plates. This deep learning project combines object detection and optical character recognition (OCR) to accurately identify and read Iranian vehicle license plates from images and video streams. Implemented using state-of-the-art computer vision techniques including YOLO for plate detection and custom CNN models for character recognition. The system handles various challenging conditions including different lighting, angles, and plate styles specific to Iranian vehicles."
   },
   {
-    "id": 5,
-    "title": "IGR204 Data Visualization",
-    "subtitle": "Interactive data visualization project for the IGR204 course at Télécom Paris.",
-    "year": "2023",
-    "tags": ["Python", "Data Viz", "Jupyter", "Analytics"],
-    "category": "web",
-    "image": "https://opengraph.githubassets.com/1/lisarosilio/igr204-Mini-Project",
-    "repo": "https://github.com/lisarosilio/igr204-Mini-Project",
-    "description": "An academic data visualization project completed as part of the IGR204 course at Télécom Paris. The project explores various techniques for visualizing complex datasets through interactive charts, graphs, and dashboards. Built using Python's data science stack including Pandas, Matplotlib, and Plotly, the project demonstrates best practices in data storytelling and visual analytics. Features include exploratory data analysis, interactive visualizations, and insightful statistical representations that reveal patterns and trends in the underlying data."
-  },
-  {
-    "id": 6,
-    "title": "Amazon Marketplace Visualizer",
-    "subtitle": "A Chrome extension for visualizing and analyzing Amazon marketplace data.",
-    "year": "2025",
-    "tags": ["Chrome Extension", "JavaScript", "React", "Data Viz"],
-    "category": "web",
-    "image": "/images/projects/junglemall.png",
-    "repo": "https://github.com/pandanautinspace/amazon-marketplace-visualizer",
-    "description": "A powerful Chrome extension that enhances the Amazon shopping experience by providing advanced data visualization and analysis tools. Built with React for a smooth, modern interface, this extension helps users make informed purchasing decisions by visualizing price trends, seller ratings, review distributions, and product comparisons. Features include interactive charts, historical price tracking, and seller analytics. The extension seamlessly integrates with Amazon's interface, providing real-time insights without disrupting the shopping flow."
-  },
-  {
     "id": 7,
     "title": "LLM Size Comparison",
     "subtitle": "Physical data visualization comparing LLM sizes and performance metrics using clay, 3D-printed elements, and mixed materials.",
     "year": "2024",
-    "tags": ["Data Viz", "Physical Computing", "3D Printing", "LLM"],
+    "tags": [
+      "Data Viz",
+      "Physical Computing",
+      "3D Printing",
+      "LLM"
+    ],
     "category": "ux",
     "image": "/images/projects/llm-physviz.png",
     "description": "An innovative physical data visualization project that represents the scale and performance characteristics of various Large Language Models (LLMs) through tangible, tactile sculptures. Using a combination of clay modeling, 3D-printed components, and mixed materials, this project creates a physical comparison of models like GPT-4, GPT-3.5, and other major LLMs. The visualization maps abstract metrics such as parameter count, training data size, and performance benchmarks to physical dimensions and textures, making complex AI concepts more accessible and understandable through direct physical interaction."
@@ -80,7 +315,12 @@
     "title": "Avangad CRM",
     "subtitle": "UI design for a CRM platform with QR-based task completion and real-time progress monitoring.",
     "year": "2024",
-    "tags": ["UI Design", "CRM", "B2B", "Figma"],
+    "tags": [
+      "UI Design",
+      "CRM",
+      "B2B",
+      "Figma"
+    ],
     "category": "ux",
     "image": "/images/projects/avangad.png",
     "notion": "https://soheillotfi.notion.site/0451ed3c8ae2424cb6996deaedae25cf?v=8f637f87c0234ecaa5b96f0a2d0ff240&source=copy_link",
@@ -91,10 +331,31 @@
     "title": "InShift (Digikala)",
     "subtitle": "Pay-as-you-go workforce platform for the Middle East's largest e-commerce company.",
     "year": "2024",
-    "tags": ["Product Design", "Enterprise", "Logistics", "Figma"],
+    "tags": [
+      "Product Design",
+      "Enterprise",
+      "Logistics",
+      "Figma"
+    ],
     "category": "ux",
     "image": "/images/projects/inshift.png",
     "notion": "https://soheillotfi.notion.site/0451ed3c8ae2424cb6996deaedae25cf?v=8f637f87c0234ecaa5b96f0a2d0ff240&source=copy_link",
     "description": "InShift is an internal workforce management platform designed for Digikala, the Middle East's largest e-commerce company that processes over 350,000 items daily. As the Product Designer, I transformed manual operational processes conducted through Excel sheets into a comprehensive digital platform that functions as a pay-as-you-go service, resulting in $2M+ cost savings in Phase 1 and estimated $7M savings in Phase 2. The project involved extensive research including shadowing fulfillment center employees, analyzing existing workflows, and conducting 20+ user interviews across different roles to understand the complex logistics operations. I developed the complete product strategy, user flows, and information architecture to address key pain points including inefficient manual processes, lack of real-time visibility, and inability to scale with company growth. The final platform features separate interfaces for job seekers (labor management, shift tracking, performance monitoring, and financial dashboards) and employers (workforce management, job assignment, and operational analytics). The design leverages Digikala's Divan Design System to maintain consistency while keeping the interface clutter-free yet informative. The platform successfully enables flexible workforce management, real-time performance tracking, and significant operational cost reduction while providing employees with transparent access to their shifts, earnings, and performance metrics."
+  },
+  {
+    "id": 5,
+    "title": "IGR204 Data Visualization",
+    "subtitle": "Interactive data visualization project for the IGR204 course at Télécom Paris.",
+    "year": "2023",
+    "tags": [
+      "Python",
+      "Data Viz",
+      "Jupyter",
+      "Analytics"
+    ],
+    "category": "web",
+    "image": "https://opengraph.githubassets.com/1/lisarosilio/igr204-Mini-Project",
+    "repo": "https://github.com/lisarosilio/igr204-Mini-Project",
+    "description": "An academic data visualization project completed as part of the IGR204 course at Télécom Paris. The project explores various techniques for visualizing complex datasets through interactive charts, graphs, and dashboards. Built using Python's data science stack including Pandas, Matplotlib, and Plotly, the project demonstrates best practices in data storytelling and visual analytics. Features include exploratory data analysis, interactive visualizations, and insightful statistical representations that reveal patterns and trends in the underlying data."
   }
 ]
