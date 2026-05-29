@@ -52,27 +52,23 @@ button {
 }
 
 .site-header-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 32px;
   margin-bottom: 28px;
 }
 
-.site-header-left {
-  flex: 1;
-  min-width: 0;
+.site-header-top::after {
+  content: '';
+  display: table;
+  clear: both;
 }
-
 
 .ascii-portrait {
   font-family: 'Inconsolata', monospace;
   font-size: 3.5px;
   line-height: 0.85;
   color: #111;
-  margin: 0;
+  margin: 0 0 0 32px;
   white-space: pre;
-  flex-shrink: 0;
+  float: right;
 }
 
 
@@ -90,7 +86,6 @@ button {
   font-size: 15px;
   color: #444;
   line-height: 1.75;
-  max-width: 480px;
   margin-bottom: 20px;
 }
 
@@ -145,9 +140,18 @@ button {
   color: #000;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  padding-top: 18px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #e0e0e0;
+  padding-left: 24px;
+  padding-right: 24px;
+  margin-left: -24px;
+  margin-right: -24px;
+  border-bottom: 1px solid #ccc;
   margin-bottom: 0;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 10;
 }
 
 /* ─── Project list ─────────────────────────────── */

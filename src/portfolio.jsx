@@ -97,34 +97,32 @@ function HomePage() {
       <header className="site-header">
         <h1 className="site-name">Soheil Lotfi</h1>
         <div className="site-header-top">
-          <div className="site-header-left">
-            <p className="site-bio">
-              MSc student at{' '}
-              <a href="https://www.ip-paris.fr/" target="_blank" rel="noopener noreferrer">
-                Institut Polytechnique de Paris
-              </a>{' '}
-              working at the intersection of HCI and AI. My research interests center on two threads:
-              how AI is redrawing the boundaries of interaction — as more tasks get delegated to
-              models, where does the human role go, and how do we design for that shift — and how
-              sustained AI use quietly reshapes human cognition, and whether we can design systems
-              that push back against that. Currently interning at{' '}
-              <a href="https://www.lisn.upsaclay.fr/" target="_blank" rel="noopener noreferrer">
-                LISN–CNRS
-              </a>
-              , building a collaborative AI platform for French Sign Language with the Deaf community.
-              Outside of research, I'm a former competitive speedcuber and a lifelong tennis player.
-              <br /><br />
-              <span className="phd-badge">Actively looking for a PhD position</span>
-            </p>
-            <nav className="site-links">
-              <a href="https://www.linkedin.com/in/soheil-lotfi" target="_blank" rel="noopener noreferrer">
-                LinkedIn ↗
-              </a>
-              <span className="site-links-sep">·</span>
-              <a href="mailto:soheil.lotfi@ip-paris.fr">Contact</a>
-            </nav>
-          </div>
           <pre className="ascii-portrait">{ASCII_ART}</pre>
+          <p className="site-bio">
+            MSc student at{' '}
+            <a href="https://www.ip-paris.fr/" target="_blank" rel="noopener noreferrer">
+              Institut Polytechnique de Paris
+            </a>{' '}
+            working at the intersection of HCI and AI. My research interests center on two threads:
+            how AI is redrawing the boundaries of interaction — as more tasks get delegated to
+            models, where does the human role go, and how do we design for that shift — and how
+            sustained AI use quietly reshapes human cognition, and whether we can design systems
+            that push back against that. Currently interning at{' '}
+            <a href="https://www.lisn.upsaclay.fr/" target="_blank" rel="noopener noreferrer">
+              LISN–CNRS
+            </a>
+            , building a collaborative AI platform for French Sign Language with the Deaf community.
+            Outside of research, I'm a former competitive speedcuber and a lifelong tennis player.
+            <br /><br />
+            <span className="phd-badge">Actively looking for a PhD position</span>
+          </p>
+          <nav className="site-links">
+            <a href="https://www.linkedin.com/in/soheil-lotfi" target="_blank" rel="noopener noreferrer">
+              LinkedIn ↗
+            </a>
+            <span className="site-links-sep">·</span>
+            <a href="mailto:soheil.lotfi@ip-paris.fr">Contact</a>
+          </nav>
         </div>
       </header>
 
